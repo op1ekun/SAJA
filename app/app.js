@@ -31,6 +31,8 @@ define('app', ['core'], function(core) {
             console.log('startModule', registeredModules[moduleName]);
             
             var module = new registeredModules[moduleName](sandbox);
+            // this makes impossible to restart a module
+            // and should be moved to f.e. runningModules array
             registeredModules[moduleName] = module;
             module.initialize();
         }
