@@ -3,23 +3,16 @@ define('app', ['core'], function(core) {
     function App() {
         
         // TODO app should keep track of register modules
-        var registeredModules = {};
+        var registeredModules   = {};
+        
+        // TODO app should keep track of running modules
+        var runningModules      = {};      
         
         // FIXME oversimplified only for testing purpose
         var sandbox = core;
         
-        // var sandbox = {
-            // mediator : {
-                // TODO do it inside start method (for registered module)
-                // subscribe: function() {
-                    // core.mediator.subscribe                
-                // }.bind(sandbox)        
-            // }
-        // };
-        
         function registerModule(moduleName, callback) {
             require(['modules/' + moduleName], function(module) {
-                console.log(moduleName, module);
                 registeredModules[moduleName] = module;
                 if (callback && typeof callback === 'function') {
                     callback();
@@ -28,27 +21,29 @@ define('app', ['core'], function(core) {
         }
         
         function startModule(moduleName, sandbox, callback) {
-            console.log('startModule', registeredModules[moduleName]);
+            console.debug('startModule', registeredModules[moduleName]);
             
             var module = new registeredModules[moduleName](sandbox);
-            registeredModules[moduleName] = module;
+            runningModules[moduleName] = module;
             module.initialize();
         }
         
+        // TODO
+        function restartModule() {}
+        
         // destroys module (removes from module's node)
-        // unregisters module (delete the object)
         // if module is not running just unregister it
         function stopModule(moduleName, callback) {
-            if (typeof registeredModules[moduleName].destroy === 'function') {
-                registeredModules[moduleName].destroy();
+            if (typeof runningModules[moduleName].destroy === 'function') {
+                runningModules[moduleName].destroy();
             }
-            delete registeredModules[moduleName];
+            delete runningModules[moduleName];
         }
         
+        // TODO run callback
         function startAllModules(callback) {
-            var names = getModulesList();
-            for (var i = 0, l = names.length; i < l; i++) {
-                startModule(names[i]);
+            for (var name in registeredModule) {
+                startModule(names);
             }
         }
         
@@ -60,52 +55,22 @@ define('app', ['core'], function(core) {
             
             return names;
         }
-        
-        
-        
-        // TODO should be aware of current application context
-        // TODO only modules are registered not their dependencies
-        // var registeredModules = app.registerModule('../lib/modules/yandex/strategy', function(sandbox) {
-            // return {
-                // TODO require module 
-                // TODO instantiate sandbox
-                // TODO bind to module's scope
-                // start   : function(),
-                // stop    : function(),
-            // }
-           
-        // });
     
         this.start = function() {
             console.log('app start');
-                
             // TODO routing is necessary
+                
+            // TODO require module 
+            // TODO should be aware of current application context
+            // FIXME? only modules are registered not their dependencies
+            // TODO add error handling
             registerModule('test', function() {
+                // TODO instantiate sandbox
+                // TODO bind to module's scope
                 // start module right after it's registered
                 startModule('test', sandbox);
             });
-            
-            // registerModule('test', function(sandbox) {
-                // return {
-                    // start   : function() {
-//                         
-                    // },
-                    // stop    : function() {
-//                         
-                    // }
-                // }
-            // });
-            
         }
-    
-        // TODO     
-        // try {
-            // registeredModule.start();
-        // }
-        // catch(e) {
-            // app.handleError(e);
-            // registeredModule.restart();
-        // }
     }
     
     return App;    
