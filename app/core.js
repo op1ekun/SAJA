@@ -1,5 +1,7 @@
-define('core', ['pubsub'], function(pubsub) {
-    return {
-        'mediator' : pubsub
-    };
-});
+define(['pubsub', 'jquery'], 
+    function(pubsub) {
+        return {
+            mediator    : pubsub,
+            DOM         : jquery
+        };
+    });

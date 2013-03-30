@@ -5,9 +5,9 @@ require.config({
         core    : 'core',
         modules : '../lib/modules',
         // router  : '../path/to/router',
-        extend  : '../lib/components/hurra/extend',
-        jquery  : '../lib/deps/jquery/jquery',
-        pubsub  : '../lib/deps/pubsub/pubsub'
+        extend  : '../lib/components/extend',
+        jquery  : '../lib/components/jquery/jquery',
+        pubsub  : '../lib/components/pubsub/pubsub'
     }
 });
 

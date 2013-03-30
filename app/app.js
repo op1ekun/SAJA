@@ -1,4 +1,4 @@
-define('app', ['core'], function(core) {
+define(['sandbox'], function(Sandbox) {
     
     function App() {
         
@@ -7,9 +7,6 @@ define('app', ['core'], function(core) {
         
         // TODO app should keep track of running modules
         var runningModules      = {};      
-        
-        // FIXME oversimplified only for testing purpose
-        var sandbox = core;
         
         function registerModule(moduleName, callback) {
             require(['modules/' + moduleName], function(module) {
@@ -20,8 +17,10 @@ define('app', ['core'], function(core) {
             });
         }
         
-        function startModule(moduleName, sandbox, callback) {
+        function startModule(moduleName, callback) {
             console.debug('startModule', registeredModules[moduleName]);
+            
+            var sandbox = new Sandbox(moduleName);
             
             var module = new registeredModules[moduleName](sandbox);
             runningModules[moduleName] = module;
@@ -68,7 +67,7 @@ define('app', ['core'], function(core) {
                 // TODO instantiate sandbox
                 // TODO bind to module's scope
                 // start module right after it's registered
-                startModule('test', sandbox);
+                startModule('test');
             });
         }
     }
