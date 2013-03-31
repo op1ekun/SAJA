@@ -2,10 +2,7 @@ define(['sandbox'], function(Sandbox) {
     
     function App() {
         
-        // TODO app should keep track of register modules
         var registeredModules   = {};
-        
-        // TODO app should keep track of running modules
         var runningModules      = {};      
         
         function registerModule(moduleName, callback) {
