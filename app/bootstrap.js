@@ -12,9 +12,7 @@ require.config({
 });
 
 require(['app'], function(App) {
-    console.log('bootstrap arguments', arguments);
-
     var app = new App();
-    // TODO start method for the whole application?
+    // TODO add middleware before starting the application
     app.start();
 });
