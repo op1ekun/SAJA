@@ -1,5 +1,5 @@
 define(['pubsub', 'jquery'],
-    // jQuery is chosen as BASE library 
+    // jQuery is chosen for the BASE library 
     function(pubsub, $) {
         return {
             mediator    : pubsub,

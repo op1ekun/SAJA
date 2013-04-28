@@ -11,7 +11,7 @@ define(['core', 'sandbox/privileges'],
                 for (var i = 0, l = innerPrivileges.length; i < l; i++) {
                     var singlePrivilege = innerPrivileges[i];
                     
-                    // process set of priveleges (recursive)
+                    // process a set of priveleges (recursive)
                     if (typeof innerPrivileges[i] === 'object') {
                         var packageName     = singlePrivilege.packageName;
                         var packageContents = singlePrivilege.packageContents;

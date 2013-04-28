@@ -21,7 +21,7 @@ define(['sandbox'], function(Sandbox) {
             
             var module = new registeredModules[moduleName](sandbox);
             runningModules[moduleName] = module;
-            module.initialize();
+            module.init();
         }
         
         // TODO
@@ -60,11 +60,11 @@ define(['sandbox'], function(Sandbox) {
             // TODO should be aware of current application context
             // FIXME? only modules are registered not their dependencies
             // TODO add error handling
-            registerModule('test', function() {
+            registerModule('test/test', function() {
                 // TODO instantiate sandbox
                 // TODO bind to module's scope
                 // start module right after it's registered
-                startModule('test');
+                startModule('test/test');
             });
         }
     }
