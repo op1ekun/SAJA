@@ -5,6 +5,16 @@
         <script src="lib/components/require/require.js" data-main="app/bootstrap"></script>
     </head>
     <body>
-        
+        <!-- 
+            The ONLY requirements are to provide 'SAJA-module' css class
+            and 'name' data attribute.
+            
+            A developer decides how to pass additional parameters into the module.
+            Doesn't matter wheter it is stringified JSON or data attributes.
+            
+            If a developer decides to a specific method of handling these additional parameters
+            this method is best to be abstraced in the AbstractModule (see examples).
+        -->
+        <div class="SAJA-module" data-name="test"></div>
     </body>
 </html>

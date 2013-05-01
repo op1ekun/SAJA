@@ -1,4 +1,4 @@
-define(['sandbox'], function(Sandbox) {
+define(['core', 'sandbox'], function(core, Sandbox) {
     
     function App() {
         
@@ -6,8 +6,11 @@ define(['sandbox'], function(Sandbox) {
         var runningModules      = {};      
         
         function registerModule(moduleName, callback) {
-            require(['modules/' + moduleName], function(module) {
+            //FIXME check if module is already registered, before requiring it
+            require(['modules/' + moduleName + '/' + moduleName], function(module) {
+                // register module then it can be started
                 registeredModules[moduleName] = module;
+                
                 if (callback && typeof callback === 'function') {
                     callback();
                 }    
@@ -19,12 +22,16 @@ define(['sandbox'], function(Sandbox) {
             
             var sandbox = new Sandbox(moduleName);
             
+            console.log('sandbox', sandbox);
+            
             var module = new registeredModules[moduleName](sandbox);
             runningModules[moduleName] = module;
             module.init();
         }
         
         // TODO
+        // To which ModuleInterface methods this one should refer?
+        // attachEvents and detachEvents should be the essential part of restarting process
         function restartModule() {}
         
         // destroys module (removes from module's node)
@@ -52,20 +59,30 @@ define(['sandbox'], function(Sandbox) {
             return names;
         }
     
-        this.start = function() {
+        this.start = function(base) {
             console.log('app start');
             // TODO routing is necessary
+            
+            // by default application searches the whole body element module tags
+            // TODO make it safe when base argument is used
+            var baseElement = document.getElementsByTagName(base || 'body')[0];
+            
+            // FIXME simplified version this probably should be handled by a core method
+            var moduleTags = baseElement.querySelectorAll('.SAJA-module');
+
+            for (var i = 0, l = moduleTags.length; i < l; i++) {
+                var moduleName = moduleTags[i].dataset['name'];
                 
-            // TODO require module 
-            // TODO should be aware of current application context
-            // FIXME? only modules are registered not their dependencies
-            // TODO add error handling
-            registerModule('test/test', function() {
-                // TODO instantiate sandbox
-                // TODO bind to module's scope
-                // start module right after it's registered
-                startModule('test/test');
-            });
+                // TODO should be aware of current application context
+                // TODO add error handling
+                // register module by namespace
+                registerModule(moduleName, function() {
+                    // TODO bind to module's scope
+                    // start module right after it's registered
+                    startModule(moduleName);
+                });
+            }                
+                
         }
     }
     
