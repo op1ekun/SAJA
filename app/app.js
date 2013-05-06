@@ -6,18 +6,27 @@ define(['core', 'sandbox'], function(core, Sandbox) {
         var runningModules      = {};      
         
         function registerModule(moduleName, callback) {
-            //FIXME check if module is already registered, before requiring it
+            // check if module is already registered
+            if (registeredModules[moduleName]) {
+                // if it is do nothing
+                return;
+            }
+            
             require(['modules/' + moduleName + '/' + moduleName], function(module) {
                 // register module then it can be started
                 registeredModules[moduleName] = module;
                 
+                // this callback will usually start the module
+                // it is a generic action of the Application
+                // in some cases Application may want to do 
+                // different things after module's registration
                 if (callback && typeof callback === 'function') {
                     callback();
                 }    
             });
         }
         
-        function startModule(moduleName, callback) {
+        function startModule(moduleName) {
             console.debug('startModule', registeredModules[moduleName]);
             
             var sandbox = new Sandbox(moduleName);
@@ -75,7 +84,8 @@ define(['core', 'sandbox'], function(core, Sandbox) {
                 
                 // TODO should be aware of current application context
                 // TODO add error handling
-                // register module by namespace
+                // register module
+                // this methid needs to receive callback because it uses require.js internally
                 registerModule(moduleName, function() {
                     // TODO bind to module's scope
                     // start module right after it's registered
