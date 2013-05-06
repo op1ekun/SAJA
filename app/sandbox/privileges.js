@@ -2,7 +2,8 @@ define([], function() {
     var privileges = {
         // common privileges
         common : [
-            'mediator'
+            'mediator',
+            'extend'
         ],
         // modules privileges
         'test' : [

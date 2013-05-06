@@ -43,44 +43,47 @@ define(['core', 'sandbox'], function(core, Sandbox) {
         // attachEvents and detachEvents should be the essential part of restarting process
         function restartModule() {}
         
-        // destroys module (removes from module's node)
-        // if module is not running just unregister it
         function stopModule(moduleName, callback) {
-            if (typeof runningModules[moduleName].destroy === 'function') {
-                runningModules[moduleName].destroy();
-            }
+            runningModules[moduleName].destroy();
             delete runningModules[moduleName];
         }
         
         // TODO run callback
         function startAllModules(callback) {
-            for (var name in registeredModule) {
-                startModule(names);
-            }
+            core.object.forEach(registeredModule, function(key) {
+                startModule(key);
+            });
         }
         
         function getModulesList() {
             var names = [];
-            for (var name in registeredModules) {
-                names.push(name);
-            }
+            core.object.forEach(registeredModules, function(key) {
+                names.push(key);
+            });
             
             return names;
         }
     
         this.start = function(base) {
-            console.log('app start');
-            // TODO routing is necessary
+            console.log('app starts in', base);
             
-            // by default application searches the whole body element module tags
-            // TODO make it safe when base argument is used
-            var baseElement = document.getElementsByTagName(base || 'body')[0];
+            // TODO routing is necessary, 
+            // it can decide about base element for a specific route etc.
             
-            // FIXME simplified version this probably should be handled by a core method
-            var moduleTags = baseElement.querySelectorAll('.SAJA-module');
+            var baseElement = core.DOM.getElements(base);
+            
+            // no base element?
+            if (!baseElement.length) {
+                console.error('no base element', base, 'found');
+                // then gracefully fallback to the body element
+                console.info('falling back to body base element');
+                baseElement = core.DOM.getElements('body');
+            }
+            
+            var moduleTags  = core.DOM.getElements('.SAJA-module', baseElement);
 
-            for (var i = 0, l = moduleTags.length; i < l; i++) {
-                var moduleName = moduleTags[i].dataset['name'];
+            core.array.forEach(moduleTags, function(index, value) {
+                var moduleName = moduleTags[index].dataset['name'];
                 
                 // TODO should be aware of current application context
                 // TODO add error handling
@@ -91,8 +94,7 @@ define(['core', 'sandbox'], function(core, Sandbox) {
                     // start module right after it's registered
                     startModule(moduleName);
                 });
-            }                
-                
+            });
         }
     }
     

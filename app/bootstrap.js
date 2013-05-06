@@ -14,5 +14,5 @@ require.config({
 require(['app'], function(App) {
     var app = new App();
     // TODO add middleware before starting the application
-    app.start();
+    app.start('#rightSide');
 });
