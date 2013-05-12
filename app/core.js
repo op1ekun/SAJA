@@ -1,11 +1,11 @@
-define(['pubsub', 'jquery', 'extend'],
+define(['pubsub', 'jquery'],
     // jQuery is chosen for the BASE library
     // some of these methods might be simplified
     // and will require more love later :) 
-    function(pubsub, $, extend) {
+    function(pubsub, $) {
         
         return {
-            extend      : extend.extend,
+            deferred    : $.Deferred,
             mediator    : pubsub,
             
             // packages
@@ -22,7 +22,7 @@ define(['pubsub', 'jquery', 'extend'],
                 }
             },
             object      : {
-                // look here jsperf.com/loop-through-objects/3
+                // look here jsperf.com/loop-through-objects/5
                 // it seems the native approach suits most of the browsers
                 forEach : function(obj, cb) {
                     var keys = Object.keys(obj);

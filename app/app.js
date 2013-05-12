@@ -2,39 +2,52 @@ define(['core', 'sandbox'], function(core, Sandbox) {
     
     function App() {
         
+        // FIXME for testing purpose
+        this.mediator = core.mediator;
+        
         var registeredModules   = {};
-        var runningModules      = {};      
+        
+        // a collection of running modules
+        // each module is identified by it's index
+        // works like database "auto increment"
+        // {
+            // 'moduleName'     : 'qwerty', 
+            // 'moduleInstance' : moduleInstance,
+        // }
+        // var runningModules      = [];
+        
+        // modules deferred objects works similar like registeredModules
+        // one deffered object is kept for all running modules of the same name
+        var modulesDeferreds    = {};
         
         function registerModule(moduleName, callback) {
-            // check if module is already registered
-            if (registeredModules[moduleName]) {
-                // if it is do nothing
-                return;
-            }
-            
-            require(['modules/' + moduleName + '/' + moduleName], function(module) {
-                // register module then it can be started
-                registeredModules[moduleName] = module;
-                
-                // this callback will usually start the module
-                // it is a generic action of the Application
-                // in some cases Application may want to do 
-                // different things after module's registration
-                if (callback && typeof callback === 'function') {
-                    callback();
-                }    
-            });
+            require(['modules/' + moduleName + '/' + moduleName],
+                function(module) {
+                    
+                    console.log('registerModule', moduleName);
+                    
+                    // register module then it can be started
+                    registeredModules[moduleName] = module;
+                    
+                    // this callback will usually start the module
+                    // it is a generic action of the Application
+                    // in some cases Application may want to do 
+                    // different things after module's registration
+                    if (callback && typeof callback === 'function') {
+                        callback();
+                    }    
+                });
         }
         
-        function startModule(moduleName) {
-            console.debug('startModule', registeredModules[moduleName]);
+        function startModule(moduleName, node, options) {
+            console.debug('startModule', moduleName, node, options);
             
             var sandbox = new Sandbox(moduleName);
             
             console.log('sandbox', sandbox);
             
-            var module = new registeredModules[moduleName](sandbox);
-            runningModules[moduleName] = module;
+            var module = new registeredModules[moduleName](sandbox, node, options);
+            // runningModules[moduleName] = module;
             module.init();
         }
         
@@ -83,20 +96,60 @@ define(['core', 'sandbox'], function(core, Sandbox) {
             var moduleTags  = core.DOM.getElements('.SAJA-module', baseElement);
 
             core.array.forEach(moduleTags, function(index, value) {
-                var moduleName = moduleTags[index].dataset['name'];
+                // FIXME #10
+                var moduleName  = moduleTags[index].dataset['name'];
+                // if set, this event will trigger the start of this module
+                // used by lazy modules
+                var trigger     = moduleTags[index].dataset['trigger'];
                 
-                // TODO should be aware of current application context
-                // TODO add error handling
-                // register module
-                // this methid needs to receive callback because it uses require.js internally
-                registerModule(moduleName, function() {
-                    // TODO bind to module's scope
-                    // start module right after it's registered
-                    startModule(moduleName);
-                });
+                // this type of module doesn't have deferred object yet, create one
+                if (!modulesDeferreds[moduleName]) {
+                    modulesDeferreds[moduleName] = new core.deferred();
+                }
+                
+                function moduleCallback() {
+                    startModule(moduleName, moduleTags[index], {
+                        trigger : {
+                            resolve : function() {
+                                modulesDeferreds[moduleName].resolve();    
+                            }
+                        }
+                    });
+                }
+                
+                // only for lazy modules
+                if (trigger) {
+                    // lazy module will have to subscribe to an existing deferred object
+                    // in case of lazy module is being registered before it's dependency
+                    // create deferred object
+                    if (!modulesDeferreds[trigger]) {
+                        modulesDeferreds[trigger] = new core.deferred();
+                    }
+                    
+                    // dependency is resolved, 
+                    // register and start the lazy module
+                    //
+                    // lazy module CANNOT be register earlier due to asynchronous nature of require.js
+                    // a developer doesn't know where require() will end
+                    modulesDeferreds[trigger].done(function() {
+                        // TODO add error handling
+                        // register module
+                        // this methid needs to receive callback because it uses require.js internally
+                        registerModule(moduleName, moduleCallback);
+                    });
+                }
+                else {
+                    // module is already registered, start it
+                    if (registeredModules[moduleName]) {
+                        moduleCallback();
+                    }
+                    else {
+                        registerModule(moduleName, moduleCallback);
+                    }
+                }
             });
         }
     }
     
-    return App;    
+    return App;
 });

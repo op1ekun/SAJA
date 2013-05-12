@@ -15,4 +15,7 @@ require(['app'], function(App) {
     var app = new App();
     // TODO add middleware before starting the application
     app.start('#rightSide');
+
+    // FIXME test only
+    window.App = app;    
 });
