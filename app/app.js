@@ -14,7 +14,7 @@ define(['core', 'sandbox'], function(core, Sandbox) {
             // 'moduleName'     : 'qwerty', 
             // 'moduleInstance' : moduleInstance,
         // }
-        // var runningModules      = [];
+        var runningModules      = [];
         
         // modules deferred objects works similar like registeredModules
         // one deffered object is kept for all running modules of the same name
@@ -46,8 +46,16 @@ define(['core', 'sandbox'], function(core, Sandbox) {
             
             console.log('sandbox', sandbox);
             
+            // get the first free index, pass it with the module' instance params
+            options.moduleIndex = runningModules.length; 
+            
             var module = new registeredModules[moduleName](sandbox, node, options);
-            // runningModules[moduleName] = module;
+            
+            runningModules.push({
+                moduleName      : moduleName,
+                moduleInstance  : module    
+            });
+            
             module.init();
         }
         
