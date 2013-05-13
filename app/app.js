@@ -110,10 +110,14 @@ define(['core', 'sandbox'], function(core, Sandbox) {
                 // used by lazy modules
                 var trigger     = moduleTags[index].dataset['trigger'];
                 
-                // this type of module doesn't have deferred object yet, create one
-                if (!modulesDeferreds[moduleName]) {
-                    modulesDeferreds[moduleName] = new core.deferred();
+                function processDeferred(name) {
+                    if (!modulesDeferreds[name]) {
+                        modulesDeferreds[name] = new core.deferred();
+                    }    
                 }
+                
+                // if this type of module doesn't have deferred object yet, create one
+                processDeferred(moduleName);                
                 
                 function moduleCallback() {
                     startModule(moduleName, moduleTags[index], {
@@ -130,9 +134,7 @@ define(['core', 'sandbox'], function(core, Sandbox) {
                     // lazy module will have to subscribe to an existing deferred object
                     // in case of lazy module is being registered before it's dependency
                     // create deferred object
-                    if (!modulesDeferreds[trigger]) {
-                        modulesDeferreds[trigger] = new core.deferred();
-                    }
+                    processDeferred(trigger);                
                     
                     // dependency is resolved, 
                     // register and start the lazy module
