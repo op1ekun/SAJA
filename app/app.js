@@ -2,7 +2,7 @@ define(['core', 'sandbox'], function(core, Sandbox) {
     
     function App() {
         
-        // FIXME for testing purpose
+        // FIXME this is only for testing purpose
         this.mediator = core.mediator;
         
         var registeredModules   = {};
@@ -49,7 +49,7 @@ define(['core', 'sandbox'], function(core, Sandbox) {
             // get the first free index
             var moduleIndex = runningModules.length; 
             // pass its getter with the module's instance params
-            // getter makes it more safe, the value can't be overwritten
+            // getter makes it safer, the value can't be overwritten
             options.getIndex = function() {
                 return moduleIndex;
             } 
