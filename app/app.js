@@ -46,8 +46,13 @@ define(['core', 'sandbox'], function(core, Sandbox) {
             
             console.log('sandbox', sandbox);
             
-            // get the first free index, pass it with the module' instance params
-            options.moduleIndex = runningModules.length; 
+            // get the first free index
+            var moduleIndex = runningModules.length; 
+            // pass its getter with the module's instance params
+            // getter makes it more safe, the value can't be overwritten
+            options.getIndex = function() {
+                return moduleIndex;
+            } 
             
             var module = new registeredModules[moduleName](sandbox, node, options);
             
