@@ -1,7 +1,7 @@
 define(['core', 'sandbox/privileges'], 
     function(core, privileges) {
         
-        function Sandbox(moduleName) {
+        function getSandbox(moduleName) {
             // use common privileges            
             // use module's privileges 
             var modulePrivileges    = privileges.common.concat(privileges[moduleName]);
@@ -37,5 +37,7 @@ define(['core', 'sandbox/privileges'],
             return processPrivileges(core, {}, modulePrivileges);
         }
         
-        return Sandbox;
+        return {
+            getSandbox : getSandbox
+        };
     });
