@@ -1,4 +1,4 @@
-define(['core', 'sandbox'], function(core, Sandbox) {
+define(['core', 'sandbox'], function(core, sandbox) {
     
     function App() {
         
@@ -29,11 +29,11 @@ define(['core', 'sandbox'], function(core, Sandbox) {
         function startModule(moduleName) {
             console.debug('startModule', registeredModules[moduleName]);
             
-            var sandbox = new Sandbox(moduleName);
+            var moduleSandbox = sandbox.getSandbox(moduleName);
             
-            console.log('sandbox', sandbox);
+            console.log('sandbox', moduleSandbox);
             
-            var module = new registeredModules[moduleName](sandbox);
+            var module = new registeredModules[moduleName](moduleSandbox);
             runningModules[moduleName] = module;
             module.init();
         }

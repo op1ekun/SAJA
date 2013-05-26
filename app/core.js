@@ -1,11 +1,10 @@
-define(['pubsub', 'jquery', 'extend'],
+define(['pubsub', 'jquery'],
     // jQuery is chosen for the BASE library
     // some of these methods might be simplified
     // and will require more love later :) 
-    function(pubsub, $, extend) {
+    function(pubsub, $) {
         
         return {
-            extend      : extend.extend,
             mediator    : pubsub,
             
             // packages
