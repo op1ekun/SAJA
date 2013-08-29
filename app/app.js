@@ -70,17 +70,17 @@ define(['core', 'sandbox'], function(core, sandbox) {
             // TODO routing is necessary, 
             // it can decide about base element for a specific route etc.
             
-            var baseElement = core.DOM.getElements(base);
+            var baseElement = core.DOM.getNodes(base);
             
             // no base element?
             if (!baseElement.length) {
                 console.error('no base element', base, 'found');
                 // then gracefully fallback to the body element
                 console.info('falling back to body base element');
-                baseElement = core.DOM.getElements('body');
+                baseElement = core.DOM.getNodes('body');
             }
             
-            var moduleTags  = core.DOM.getElements('.SAJA-module', baseElement);
+            var moduleTags  = core.DOM.getNodes('.SAJA-module', baseElement);
 
             core.array.forEach(moduleTags, function(index, value) {
                 var moduleName = moduleTags[index].dataset['name'];

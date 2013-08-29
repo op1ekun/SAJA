@@ -1,6 +1,6 @@
 define(['pubsub', 'jquery'],
     // jQuery is chosen for the BASE library
-    // some of these methods might be simplified
+    // these methods are only an example
     // and will require more love later :) 
     function(pubsub, $) {
         
@@ -9,9 +9,15 @@ define(['pubsub', 'jquery'],
             
             // packages
             DOM         : {
+                createNode  : function(htmlString) {
+                    return $(htmlString).get();
+                }, 
                 // returns an array of DOM nodes in querySelectorAll style
-                getElements : function(selector, node) {
+                getNodes    : function(selector, node) {
                     return $(selector, node).get();
+                },
+                append      : function(node, target) {
+                    $(node).appendTo(target);
                 },
                 attachEvent : function(node, eventName, cb) {
                     $(node).on(eventName, cb);
