@@ -2,7 +2,13 @@ define(['core', 'sandbox'], function(core, sandbox) {
     
     function App() {
         
-        var registeredModules   = {};
+        /**
+         * Collection of object literasl representing modules.
+         * These modules are configured on the website
+         * @type {Array}
+         */
+        var registeredModules   = [];
+
         var runningModules      = {};      
         
         function registerModule(moduleName, callback) {
@@ -89,11 +95,11 @@ define(['core', 'sandbox'], function(core, sandbox) {
                 // TODO add error handling
                 // register module
                 // this methid needs to receive callback because it uses require.js internally
-                registerModule(moduleName, function() {
+                // registerModule(moduleName, function() {
                     // TODO bind to module's scope
                     // start module right after it's registered
-                    startModule(moduleName);
-                });
+                    // startModule(moduleName);
+                // });
             });
         }
     }
