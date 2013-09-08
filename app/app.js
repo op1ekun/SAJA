@@ -3,73 +3,33 @@ define(['core', 'sandbox'], function(core, sandbox) {
     function App() {
         
         /**
-         * Collection of object literasl representing modules.
-         * These modules are configured on the website
-         * @type {Array}
+         * A collection of object literals representing modules.
+         * @type {Array}    collection of module configuration objects
          */
-        var registeredModules   = [];
-
-        var runningModules      = {};      
+        var registeredModules       = [],
+        /**
+         * A collection of object literals representing lazy modules.
+         * These modules are configured in the html through data-parameters
+         * @type {Array}    collection of module configuration objects
+         */
+            registeredLazyModules   = [],
+            runningModules          = {};
         
-        function registerModule(moduleName, callback) {
-            // check if module is already registered
-            if (registeredModules[moduleName]) {
-                // if it is do nothing
-                return;
-            }
-            
-            require(['modules/' + moduleName + '/' + moduleName], function(module) {
-                // register module then it can be started
-                registeredModules[moduleName] = module;
-                
-                // this callback will usually start the module
-                // it is a generic action of the Application
-                // in some cases Application may want to do 
-                // different things after module's registration
-                if (callback && typeof callback === 'function') {
-                    callback();
-                }    
-            });
+        function startModule(moduleName, callback) {
+            require(['modules/' + moduleName + '/' + moduleName], callback);
         }
         
-        function startModule(moduleName) {
-            console.debug('startModule', registeredModules[moduleName]);
-            
-            var moduleSandbox = sandbox.getSandbox(moduleName);
-            
-            console.log('sandbox', moduleSandbox);
-            
-            var module = new registeredModules[moduleName](moduleSandbox);
-            runningModules[moduleName] = module;
-            module.init();
-        }
-        
-        // TODO
-        // To which ModuleInterface methods this one should refer?
-        // attachEvents and detachEvents should be the essential part of restarting process
-        function restartModule() {}
         
         function stopModule(moduleName, callback) {
             runningModules[moduleName].destroy();
             delete runningModules[moduleName];
         }
+
+        // TODO
+        // To which ModuleInterface methods this one should refer?
+        // attachEvents and detachEvents should be the essential part of restarting process
+        function restartModule() {}
         
-        // TODO run callback
-        function startAllModules(callback) {
-            core.object.forEach(registeredModule, function(key) {
-                startModule(key);
-            });
-        }
-        
-        function getModulesList() {
-            var names = [];
-            core.object.forEach(registeredModules, function(key) {
-                names.push(key);
-            });
-            
-            return names;
-        }
-    
         this.start = function(base) {
             console.log('app starts in', base);
             
@@ -88,21 +48,38 @@ define(['core', 'sandbox'], function(core, sandbox) {
             
             var moduleTags  = core.DOM.getElements('.SAJA-module', baseElement);
 
+            // register modules 
             core.array.forEach(moduleTags, function(index, value) {
-                var moduleName = moduleTags[index].dataset['name'];
-                
-                // TODO should be aware of current application context
-                // TODO add error handling
-                // register module
-                // this methid needs to receive callback because it uses require.js internally
-                // registerModule(moduleName, function() {
-                    // TODO bind to module's scope
-                    // start module right after it's registered
-                    // startModule(moduleName);
-                // });
+                var moduleConfig    = {
+                        name        : moduleTags[index].dataset['name'],
+                        // deferred    : new core.deferred()
+                    },
+                    trigger         = moduleTags[index].dataset['trigger'];
+
+                if (trigger) {
+                    moduleConfig.trigger = trigger;
+                    registeredLazyModules.push(moduleConfig);
+                }
+                else {
+                    registeredModules.push(moduleConfig);
+                }
             });
-        }
+
+            core.array.forEach(registeredModules, function(index, moduleConfig) {
+                var moduleName = moduleConfig.name;
+
+                startModule(moduleName, function(Module) {
+                    var module = new Module();
+                    // FIXME rename the method
+                    module.init();
+
+                    runningModules[moduleName] = module;
+                });
+            });
+
+            console.log(registeredModules, registeredLazyModules);
+        };
     }
     
-    return App;    
+    return App;
 });
