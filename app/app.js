@@ -19,7 +19,6 @@ define(['core', 'sandbox'], function(core, sandbox) {
             require(['modules/' + moduleName + '/' + moduleName], callback);
         }
         
-        
         function stopModule(moduleName, callback) {
             runningModules[moduleName].destroy();
             delete runningModules[moduleName];
@@ -31,18 +30,14 @@ define(['core', 'sandbox'], function(core, sandbox) {
         function restartModule() {}
         
         this.start = function(base) {
-            console.log('app starts in', base);
-            
-            // TODO routing is necessary, 
+            // TODO 
+            // routing is necessary, 
             // it can decide about base element for a specific route etc.
-            
             var baseElement = core.DOM.getElements(base);
             
             // no base element?
             if (!baseElement.length) {
-                console.error('no base element', base, 'found');
                 // then gracefully fallback to the body element
-                console.info('falling back to body base element');
                 baseElement = core.DOM.getElements('body');
             }
             
@@ -51,13 +46,14 @@ define(['core', 'sandbox'], function(core, sandbox) {
             // register modules 
             core.array.forEach(moduleTags, function(index, value) {
                 var moduleConfig    = {
-                        name        : moduleTags[index].dataset['name'],
-                        // deferred    : new core.deferred()
+                        name        : moduleTags[index].dataset['name']
+                        // TODO process other params
                     },
+                    // try to retrieve the name of triggering event
                     trigger         = moduleTags[index].dataset['trigger'];
 
                 if (trigger) {
-                    moduleConfig.trigger = trigger;
+                    // moduleConfig.trigger = trigger;
                     registeredLazyModules.push(moduleConfig);
                 }
                 else {
@@ -65,9 +61,12 @@ define(['core', 'sandbox'], function(core, sandbox) {
                 }
             });
 
+            // run registered modules
+            // run normal modules only
             core.array.forEach(registeredModules, function(index, moduleConfig) {
                 var moduleName = moduleConfig.name;
 
+                // TODO here all the module specific configuration will be run
                 startModule(moduleName, function(Module) {
                     var module = new Module();
                     // FIXME rename the method
@@ -76,8 +75,6 @@ define(['core', 'sandbox'], function(core, sandbox) {
                     runningModules[moduleName] = module;
                 });
             });
-
-            console.log(registeredModules, registeredLazyModules);
         };
     }
     
