@@ -6,6 +6,7 @@ define(['pubsub', 'jquery'],
         
         return {
             mediator    : pubsub,
+            deferred    : $.deferred,
             
             // packages
             DOM         : {
