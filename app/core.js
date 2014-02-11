@@ -14,6 +14,9 @@ define(['pubsub', 'jquery'],
                 getElements : function(selector, node) {
                     return $(selector, node).get();
                 },
+                getData : function(selector, node) {
+                    return $(node).data(selector);
+                },
                 attachEvent : function(node, eventName, cb) {
                     $(node).on(eventName, cb);
                 },
@@ -28,7 +31,7 @@ define(['pubsub', 'jquery'],
                     var keys = Object.keys(obj);
                     for (var i = 0, l = keys.length; i < l; i++) {
                         cb(keys[i], obj[ keys[i] ]);
-                    }                   
+                    }
                 }
             },
             array       : {
