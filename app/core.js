@@ -15,7 +15,7 @@ define(['pubsub', 'jquery'],
                     return $(selector, node).get();
                 },
                 getData : function(selector, node) {
-                    return $(selector, node).get();
+                    return $(node).data(selector);
                 },
                 attachEvent : function(node, eventName, cb) {
                     $(node).on(eventName, cb);

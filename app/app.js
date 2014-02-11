@@ -46,11 +46,13 @@ define(['core', 'sandbox'], function(core, sandbox) {
             // register modules
             core.array.forEach(moduleTags, function(index, value) {
                 var moduleConfig    = {
-                        name : core.DOM.getData('data-module_name')
+                        name : core.DOM.getData('module_name', moduleTags[index])
                         // TODO process other params
                     },
                     // try to retrieve the name of triggering event
-                    trigger  = core.DOM.getData('trigger');
+                    trigger  = core.DOM.getData('trigger', moduleTags[index]);
+
+                console.log(moduleConfig);
 
                 if (trigger) {
                     // moduleConfig.trigger = trigger;
