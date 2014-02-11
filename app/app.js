@@ -43,14 +43,14 @@ define(['core', 'sandbox'], function(core, sandbox) {
             
             var moduleTags  = core.DOM.getElements('.SAJA-module', baseElement);
 
-            // register modules 
+            // register modules
             core.array.forEach(moduleTags, function(index, value) {
                 var moduleConfig    = {
-                        name : core.DOM.getData(name)
+                        name : core.DOM.getData('data-module_name')
                         // TODO process other params
                     },
                     // try to retrieve the name of triggering event
-                    trigger  = core.DOM.getData(trigger);
+                    trigger  = core.DOM.getData('trigger');
 
                 if (trigger) {
                     // moduleConfig.trigger = trigger;

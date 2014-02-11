@@ -31,7 +31,7 @@ define(['pubsub', 'jquery'],
                     var keys = Object.keys(obj);
                     for (var i = 0, l = keys.length; i < l; i++) {
                         cb(keys[i], obj[ keys[i] ]);
-                    }                
+                    }
                 }
             },
             array       : {
