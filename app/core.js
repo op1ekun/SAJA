@@ -12,13 +12,16 @@ define(['pubsub', 'jquery'],
             DOM         : {
                 createNode  : function(htmlString) {
                     return $(htmlString).get();
-                }, 
+                },
                 // returns an array of DOM nodes in querySelectorAll style
                 getNodes    : function(selector, node) {
                     return $(selector, node).get();
                 },
                 append      : function(node, target) {
                     $(node).appendTo(target);
+                },
+                getData : function(selector, node) {
+                    return $(node).data(selector);
                 },
                 attachEvent : function(node, eventName, cb) {
                     $(node).on(eventName, cb);
@@ -34,7 +37,7 @@ define(['pubsub', 'jquery'],
                     var keys = Object.keys(obj);
                     for (var i = 0, l = keys.length; i < l; i++) {
                         cb(keys[i], obj[ keys[i] ]);
-                    }                   
+                    }
                 }
             },
             array       : {
