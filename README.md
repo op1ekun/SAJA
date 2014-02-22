@@ -6,7 +6,7 @@ Scalable Architecture for Javascript Applications
 ## Features
 * [RequireJS](requirejs.org/docs/download.html) to modularize your code and run everything on demand,
 * Abstraction layer through [core.js](https://github.com/op1ekun/SAJA/blob/master/app/core.js) module,
-* Sandbox module utilizing [Facade Pattern](addyosmani.com/largescalejavascript/#facadepattern) to hide complicated core functionalities from modules and enable only what is necessary,
+* Sandbox module utilizing [Facade Pattern](http://addyosmani.com/largescalejavascript/#facadepattern) to hide complicated core functionalities from modules and enable only what is necessary,
 * [Mediator Pattern](http://addyosmani.com/largescalejavascript/#mediatorpattern) to decouple modules logic and enable easy communication
 
 ## Credits
