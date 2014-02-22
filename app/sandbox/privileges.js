@@ -15,6 +15,11 @@ define([], function() {
                 ]
             },
         ],
+        'another' : [
+            // use the whole DOM
+            'DOM'
+        ]
+
     }
     
     return privileges;

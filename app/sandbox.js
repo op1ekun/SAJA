@@ -1,4 +1,4 @@
-define(['core', 'sandbox/privileges'], 
+define(['core', 'sandbox/privileges'],
     function(core, privileges) {
         
         function getSandbox(moduleName) {
@@ -19,8 +19,8 @@ define(['core', 'sandbox/privileges'],
                         moduleSandbox[ packageName ] = {};
                         
                         processPrivileges(
-                            innerCore[ packageName ], 
-                            moduleSandbox[ packageName ], 
+                            innerCore[ packageName ],
+                            moduleSandbox[ packageName ],
                             packageContents
                         );
                     }
