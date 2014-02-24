@@ -3,7 +3,6 @@ require.config({
     paths: {
         modules : '../lib/modules',
         extend  : '../lib/components/extend',
-        jquery  : '../lib/components/jquery/jquery',
         pubsub  : '../lib/components/pubsub/pubsub'
     }
 });

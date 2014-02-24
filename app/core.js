@@ -1,33 +1,31 @@
-define(['pubsub', 'jquery'],
-    // jQuery is chosen for the BASE library
-    // these methods are only an example
-    // and will require more love later :) 
-    function(pubsub, $) {
+define(['pubsub'],
+     
+    function(pubsub) {
         
         return {
             mediator    : pubsub,
-            deferred    : $.deferred,
+            
             
             // packages
             DOM         : {
                 createNode  : function(htmlString) {
-                    return $(htmlString).get();
+                    return document.htmlString;
                 },
                 // returns an array of DOM nodes in querySelectorAll style
                 getNodes    : function(selector, node) {
-                    return $(selector, node).get();
+                    return document.querySelectorAll(selector);
                 },
                 append      : function(node, target) {
-                    $(node).appendTo(target);
+                    document.append(target);
                 },
                 getData : function(selector, node) {
-                    return $(node).data(selector);
+                    return document.getElementsByTagName(selector);
                 },
                 attachEvent : function(node, eventName, cb) {
-                    $(node).on(eventName, cb);
+                    document.attachEvent(eventName, cb);
                 },
                 detachEvent : function(node, eventName) {
-                    $(node).off(eventName);
+                    document.detachEvent(eventName);
                 }
             },
             object      : {
