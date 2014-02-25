@@ -23,6 +23,12 @@ define(['core', 'sandbox'], function(core, sandbox) {
             uid                     = 1;
         
         function startModule(moduleName, callback) {
+            // DEBUG
+            // will be gone from the final version
+            if (typeof moduleName != 'String') {
+                throw new TypeError('moduleName has to be a string');
+            }
+
             require(['modules/' + moduleName + '/' + moduleName], callback);
         }
         
@@ -45,7 +51,6 @@ define(['core', 'sandbox'], function(core, sandbox) {
             // no base element?
             if (!baseElement.length) {
                 // then gracefully fallback to the body element
-                console.info('falling back to body base element');
                 baseElement = core.DOM.getNodes('body');
             }
             
@@ -53,6 +58,7 @@ define(['core', 'sandbox'], function(core, sandbox) {
 
             // register modules
             core.array.forEach(moduleTags, function(index, moduleNode) {
+
                 var moduleConfig    = {
                         name : core.DOM.getData('module_name', moduleNode),
                         node : moduleNode
@@ -61,6 +67,10 @@ define(['core', 'sandbox'], function(core, sandbox) {
                     trigger  = core.DOM.getData('trigger', moduleNode);
 
                 if (trigger) {
+                    // DEBUG
+                    if (typeof trigger != 'String') {
+                        throw new TypeError('trigger has to be a string');
+                    }
                     // moduleConfig.trigger = trigger;
                     registeredLazyModules.push(moduleConfig);
                 }
