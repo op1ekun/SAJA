@@ -23,12 +23,6 @@ define(['core', 'sandbox'], function(core, sandbox) {
             uid                     = 1;
         
         function startModule(moduleName, callback) {
-            // DEBUG
-            // will be gone from the final version
-            if (typeof moduleName != 'string') {
-                throw new TypeError('moduleName has to be a string');
-            }
-
             require(['modules/' + moduleName + '/' + moduleName], callback);
         }
         
@@ -67,10 +61,6 @@ define(['core', 'sandbox'], function(core, sandbox) {
                     trigger  = core.DOM.getData('trigger', moduleNode);
 
                 if (trigger) {
-                    // DEBUG
-                    if (typeof trigger != 'string') {
-                        throw new TypeError('trigger has to be a string');
-                    }
                     // moduleConfig.trigger = trigger;
                     registeredLazyModules.push(moduleConfig);
                 }
