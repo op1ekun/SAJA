@@ -1,12 +1,18 @@
-define(['pubsub', 'jquery'],
+define(['pubsub', 'eventEmitter', 'jquery'],
     // jQuery is chosen for the BASE library
     // these methods are only an example
     // and will require more love later :) 
     function(pubsub, $) {
         
         return {
-            mediator    : pubsub,
-            deferred    : $.deferred,
+            mediator        : pubsub,
+            // FIXME
+            // TODO
+            // event emitter should be a part of every module
+            // currently it can only be passed to the module by
+            // sandbox which is a little inconvenience
+            eventEmitter    : eventEmitter,
+            deferred        : $.deferred,
             
             // packages
             DOM         : {
