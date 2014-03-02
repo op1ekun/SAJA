@@ -45,7 +45,6 @@ define(['core', 'sandbox'], function(core, sandbox) {
             // no base element?
             if (!baseElement.length) {
                 // then gracefully fallback to the body element
-                console.info('falling back to body base element');
                 baseElement = core.DOM.getNodes('body');
             }
             
@@ -53,6 +52,7 @@ define(['core', 'sandbox'], function(core, sandbox) {
 
             // register modules
             core.array.forEach(moduleTags, function(index, moduleNode) {
+
                 var moduleConfig    = {
                         name : core.DOM.getData('module_name', moduleNode),
                         node : moduleNode
