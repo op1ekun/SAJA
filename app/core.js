@@ -2,7 +2,7 @@ define(['pubsub', 'eventEmitter'],
     // jQuery is chosen for the BASE library
     // these methods are only an example
     // and will require more love later :) 
-    function(pubsub, $) {
+    function(pubsub, eventEmitter) {
         
         return {
             mediator        : pubsub,
@@ -11,7 +11,7 @@ define(['pubsub', 'eventEmitter'],
             // event emitter should be a part of every module
             // currently it can only be passed to the module by
             // sandbox which is a little inconvenience
-            eventEmitter    : eventEmitter
+            eventEmitter    : eventEmitter,
             
             // packages
             DOM         : {
