@@ -25,7 +25,7 @@ define(['core', 'sandbox'], function(core, sandbox) {
         function startModule(moduleName, callback) {
             // DEBUG
             // will be gone from the final version
-            if (typeof moduleName != 'String') {
+            if (typeof moduleName != 'string') {
                 throw new TypeError('moduleName has to be a string');
             }
 
@@ -68,7 +68,7 @@ define(['core', 'sandbox'], function(core, sandbox) {
 
                 if (trigger) {
                     // DEBUG
-                    if (typeof trigger != 'String') {
+                    if (typeof trigger != 'string') {
                         throw new TypeError('trigger has to be a string');
                     }
                     // moduleConfig.trigger = trigger;

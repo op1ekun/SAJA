@@ -9,24 +9,35 @@ define(['pubsub'],
             // packages
             DOM         : {
                 createNode  : function(htmlString) {
-                    return document.htmlString;
+                    var container = document.createElement('div');
+                    container.innerHTML = htmlString;
+                    return container.children[0];
                 },
                 // returns an array of DOM nodes in querySelectorAll style
                 getNodes    : function(selector, node) {
                     return document.querySelectorAll(selector);
                 },
-                append      : function(node, target) {
-                    document.append(target);
+                append      : function(node, parent) {
+                    if (typeof parent == 'string') {
+                        parent = document.querySelector(parent);
+                    }
+
+                    parent.appendChild(node);
                 },
                 getData : function(selector, node) {
-                    return document.getElementsByTagName(selector);
+                    return node.dataset[selector];
                 },
-                attachEvent : function(node, eventName, cb) {
-                    document.attachEvent(eventName, cb);
-                },
-                detachEvent : function(node, eventName) {
-                    document.detachEvent(eventName);
-                }
+                // FIXME
+                // TODO
+                // these are only placeholders
+                // DO NOT TRY TO USE THEM :)
+                // 
+                // attachEvent : function(node, eventName, cb) {
+                //     document.attachEvent(eventName, cb);
+                // },
+                // detachEvent : function(node, eventName, handle) {
+                //     document.detachEvent(eventName);
+                // }
             },
             object      : {
                 // look here jsperf.com/loop-through-objects/3
