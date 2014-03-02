@@ -1,9 +1,11 @@
 require.config({
-    basePath: 'app',
-    paths: {
-        modules : '../lib/modules',
-        extend  : '../lib/components/extend',
-        pubsub  : '../lib/components/pubsub/pubsub'
+    basePath    : 'app',
+    paths       : {
+        modules         : '../lib/modules',
+        extend          : '../lib/components/extend',
+        jquery          : '../lib/components/jquery/jquery',
+        pubsub          : '../lib/components/pubsub/pubsub',
+        eventEmitter    : '../lib/components/eventemitter/eventemitter'
     }
 });
 
